@@ -11,18 +11,22 @@ class Application extends Component {
     super(props);
     this.state = {
       currentUser:null
-    }
+    };
+
+    this.restaurantRef = database.ref('/restaurants');
   }
 
   componentDidMount() {
     auth.onAuthStateChanged((currentUser) => {
-      console.log('AuthChange', currentUser);
       this.setState({currentUser});
+      this.restaurantRef.on('value', (snapshot) => {
+        this.setState({ restaurants: snapshot.val() });
+      });
     })
   }
 
   render() {
-    const { currentUser } = this.state;
+    const { currentUser, restaurants } = this.state;
 
     return (
       <div className="Application">
@@ -30,7 +34,13 @@ class Application extends Component {
           <h1>Lunch Rush</h1>
         </header>
         {!currentUser && <SignIn/>}
-        {currentUser && <CurrentUser user={currentUser} />}
+        {currentUser &&
+        <div>
+          <NewRestaurant />
+          <Restaurants restaurants={restaurants} user={currentUser} />
+          <CurrentUser user={currentUser} />
+        </div>
+        }
       </div>
     );
   }
