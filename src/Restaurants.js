@@ -30,7 +30,7 @@ class Restaurants extends Component {
   }
 
   render() {
-    const {restaurants} = this.props;
+    const { user, restaurants } = this.props;
     return (
       <section className="Restaurants">
         {
@@ -38,6 +38,7 @@ class Restaurants extends Component {
             return <Restaurant
               key={key}
               {...restaurants}
+              user={user}
               handleSelect={() => this.handleSelect(key)}
               handleDeselect={() => this.handleDeselect(key)}
             />
@@ -49,7 +50,7 @@ class Restaurants extends Component {
 }
 
 Restaurants.propTypes = {
-  user: PropTypes.object,
+  currentUser: PropTypes.object,
   restaurantsRef: PropTypes.object,
   restaurants: PropTypes.object
 };
